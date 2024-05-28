@@ -142,7 +142,8 @@ class Player(pygame.sprite.Sprite):
 
         sprite_sheet_name = sprite_sheet + "_" + self.direction
         sprites = self.SPRITES[sprite_sheet_name]
-        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
+        sprite_index = (self.animation_count //
+                        self.ANIMATION_DELAY) % len(sprites)
         self.sprite = sprites[sprite_index]
         self.animation_count += 1
         self.update()
@@ -192,7 +193,8 @@ class Fire(Object):
 
     def loop(self):
         sprites = self.fire[self.animation_name]
-        sprite_index = self.animation_count // self.ANIMATION_DELAY % len(sprites)
+        sprite_index = (self.animation_count // 
+                        self.ANIMATION_DELAY) % len(sprites)
         self.image = sprites[sprite_index]
         self.animation_count += 1
 

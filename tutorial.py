@@ -8,7 +8,7 @@ pygame.init()
 
 pygame.display.set_caption("Platformer")
 
-WIDTH, HEIGHT = 1000, 500
+WIDTH, HEIGHT = 1000, 576
 FPS = 60
 PLAYER_VEL = 5
 
@@ -264,9 +264,9 @@ def handle_move(player, objects):
     collide_left = collide(player, objects, -PLAYER_VEL * 2)
     collide_right = collide(player, objects, PLAYER_VEL * 2)
 
-    if keys[pygame.K_LEFT] and not collide_left:
+    if keys[pygame.K_a] and not collide_left:
         player.move_left(PLAYER_VEL)
-    if keys[pygame.K_RIGHT] and not collide_right:
+    if keys[pygame.K_d] and not collide_right:
         player.move_right(PLAYER_VEL)
 
     vertical_collide = handle_vertical_collision(player, objects, player.y_vel)
@@ -283,12 +283,19 @@ def main(window):
 
     block_size = 96
 
-    player = Player(100, 100, 50, 50)
+    player = Player(22, 100, 50, 50)
     fire = Fire(100, HEIGHT - block_size - 64, 16, 32)
     fire.on()
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)
-             for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
-    objects = [*floor, Block(0, HEIGHT - block_size * 2, block_size),
+             for i in range(0, (WIDTH * 1) // block_size)]
+    wall = [Block(-block_size, i * block_size, block_size)
+            for i in range (-WIDTH // block_size, (WIDTH * 1) // block_size)]
+    roof = [Block(i * block_size, 0, block_size)
+            for i in range (0, (WIDTH * 1) // block_size)]
+    objects = [*floor, 
+               *wall, 
+               *roof, 
+               Block(0, HEIGHT - block_size * 2, block_size),
                Block(block_size * 3, HEIGHT - block_size * 4, block_size), fire]
 
     offset_x = 0
@@ -314,6 +321,8 @@ def main(window):
 
         if ((player.rect.right - offset_x >= WIDTH - scroll_area_width) and player.x_vel > 0) or (
                 (player.rect.left - offset_x <= scroll_area_width) and player.x_vel < 0):
+            if offset_x <= 0:
+                offset_x = 5
             offset_x += player.x_vel
 
     pygame.quit()
