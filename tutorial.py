@@ -287,16 +287,22 @@ def main(window):
     fire = Fire(100, HEIGHT - block_size - 64, 16, 32)
     fire.on()
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)
-             for i in range(0, (WIDTH * 1) // block_size)]
+             for i in range(0, (WIDTH * 4) // block_size)]
     wall = [Block(-block_size, i * block_size, block_size)
             for i in range (-WIDTH // block_size, (WIDTH * 1) // block_size)]
     roof = [Block(i * block_size, 0, block_size)
-            for i in range (0, (WIDTH * 1) // block_size)]
+            for i in range (0, (WIDTH * 4) // block_size)]
+    obstacle_floor = [
+            *[Block(block_size * d, HEIGHT - block_size * 4, block_size) for d in range(3,6)],
+            Block(block_size * 8, HEIGHT - block_size * 3, block_size),
+            *[Block(block_size * d, HEIGHT - block_size * 4, block_size) for d in range(11,14)]
+            ]
     objects = [*floor, 
                *wall, 
                *roof, 
                Block(0, HEIGHT - block_size * 2, block_size),
-               Block(block_size * 3, HEIGHT - block_size * 4, block_size), fire]
+               *obstacle_floor,
+               fire]
 
     offset_x = 0
     scroll_area_width = 200
